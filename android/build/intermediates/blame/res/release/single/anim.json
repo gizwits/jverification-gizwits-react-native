@@ -1,0 +1,78 @@
+[
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_push_up_in.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_push_up_in.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_tooltip_enter.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_tooltip_enter.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_tooltip_exit.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_tooltip_exit.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/umcsdk_anim_loading.xml",
+        "source": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/src/main/res/anim/umcsdk_anim_loading.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_fade_out.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_fade_out.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_push_up_out.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_push_up_out.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_slide_up.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_slide_up.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_slide_down.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_slide_down.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/reactandroid_catalyst_fade_in.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/jetified-react-native-36.0.0.aar/abd709467922270eea83ff54a8894277/res/anim/reactandroid_catalyst_fade_in.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/anim/abc_fade_in.xml"
+    }
+]

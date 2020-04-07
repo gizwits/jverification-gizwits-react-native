@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/core-1.0.1.aar/2d23fbd574c629e7891f1318405f3fbe/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/core-1.0.1.aar/2d23fbd574c629e7891f1318405f3fbe/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/core-1.0.1.aar/2d23fbd574c629e7891f1318405f3fbe/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/core-1.0.1.aar/2d23fbd574c629e7891f1318405f3fbe/res/layout-v21/notification_template_custom_big.xml"
+    }
+]

@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/res/merged/release/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/values-v18/values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Volumes/Transcend/桌面/super app rn/备份/gizwits-super-app/node_modules/jverification-react-native/android/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "/Users/williamzhang/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.2.aar/531238e52ec19d76f882e56b62fcb907/res/values-v18/values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}
