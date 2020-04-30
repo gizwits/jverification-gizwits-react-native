@@ -1,11 +1,11 @@
 {
   "name": "jverification-gizwits-react-native",
-  "description": "React Native JVerification component for Android and iOS",
+  "description": "更新极光认证SDK（安卓 2.6.3，iOS 2.6.2）",
   "homepage": "https://github.com/jpush/jverification-react-native",
   "main": "index.js",
   "license": "ISC",
   "author": "wicked.tc130",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpush/jverification-react-native"

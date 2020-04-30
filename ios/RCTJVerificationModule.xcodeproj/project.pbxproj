@@ -27,7 +27,7 @@
 		62890E7921902C8400803A2B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7821902C8400803A2B /* CoreGraphics.framework */; };
 		62890E7B21902C9400803A2B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7A21902C9400803A2B /* libsqlite3.tbd */; };
 		62890E7D21902C9A00803A2B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62890E7C21902C9A00803A2B /* MobileCoreServices.framework */; };
-		C5F37C97244021A900BA5FC0 /* libjverification-ios-2.6.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F37C96244021A900BA5FC0 /* libjverification-ios-2.6.0.a */; };
+		C51BDA9E245A9FBC00B84911 /* libjverification-ios-2.6.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C51BDA9D245A9FBC00B84911 /* libjverification-ios-2.6.2.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,7 +66,7 @@
 		62890E7821902C8400803A2B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		62890E7A21902C9400803A2B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		62890E7C21902C9A00803A2B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		C5F37C96244021A900BA5FC0 /* libjverification-ios-2.6.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjverification-ios-2.6.0.a"; path = "RCTJVerificationModule/libjverification-ios-2.6.0.a"; sourceTree = "<group>"; };
+		C51BDA9D245A9FBC00B84911 /* libjverification-ios-2.6.2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjverification-ios-2.6.2.a"; path = "RCTJVerificationModule/libjverification-ios-2.6.2.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +76,7 @@
 			files = (
 				5CEEEC492361C5210072E0C1 /* libc++.1.tbd in Frameworks */,
 				62890E7D21902C9A00803A2B /* MobileCoreServices.framework in Frameworks */,
+				C51BDA9E245A9FBC00B84911 /* libjverification-ios-2.6.2.a in Frameworks */,
 				5CEEEC432361C4CD0072E0C1 /* TYRZSDK.framework in Frameworks */,
 				5CEEEC422361C4CD0072E0C1 /* EAccountApiSDK.framework in Frameworks */,
 				62890E7B21902C9400803A2B /* libsqlite3.tbd in Frameworks */,
@@ -86,7 +87,6 @@
 				62890E7321902C6700803A2B /* CoreTelephony.framework in Frameworks */,
 				62890E7121902C5D00803A2B /* libz.tbd in Frameworks */,
 				62890E6F21902C5600803A2B /* libresolv.tbd in Frameworks */,
-				C5F37C97244021A900BA5FC0 /* libjverification-ios-2.6.0.a in Frameworks */,
 				62890E6D21902C4E00803A2B /* CoreFoundation.framework in Frameworks */,
 				5CEEEC472361C5080072E0C1 /* account_verify_sdk_core.framework in Frameworks */,
 				62890E6B21902C4600803A2B /* CFNetwork.framework in Frameworks */,
@@ -134,7 +134,7 @@
 		62890E6521902C3B00803A2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C5F37C96244021A900BA5FC0 /* libjverification-ios-2.6.0.a */,
+				C51BDA9D245A9FBC00B84911 /* libjverification-ios-2.6.2.a */,
 				5CEEEC482361C5210072E0C1 /* libc++.1.tbd */,
 				62890E7C21902C9A00803A2B /* MobileCoreServices.framework */,
 				62890E7A21902C9400803A2B /* libsqlite3.tbd */,
