@@ -267,6 +267,44 @@ RCT_EXPORT_METHOD(getAuthorizationWithController: (BOOL *)enable)
     });
 }
 
+RCT_EXPORT_METHOD(getAuthorizationWithControllerByTimeout: (NSDictionary *)params)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+        UIViewController *topVC = vc;
+        if (topVC.presentedViewController) {
+            topVC = topVC.presentedViewController;
+        }
+        BOOL enable = YES;
+        NSNumber* enableNumber = [params objectForKey:ENABLE];
+        if(enableNumber){
+            enable = [enableNumber boolValue];
+        }
+        NSTimeInterval timeout = 3000;
+        NSNumber* timeoutNumber = [params objectForKey:TIME];
+        if(timeout){
+            timeout = [timeoutNumber doubleValue];
+        }
+        [JVERIFICATIONService getAuthorizationWithController:topVC hide:enable animated:YES timeout:timeout completion:^(NSDictionary *result) {
+            NSNumber *code = result[@"code"];
+            NSString *content = @"";
+            if(result[@"content"]){
+                content = result[@"content"];
+            }
+            if(result[@"loginToken"]){
+                content = result[@"loginToken"];
+            }
+            NSString *operator = result[@"operator"]?result[@"operator"]:@"";
+            NSDictionary *responseData = [self convertToResult:code content:content operator:operator];
+            [self sendLoginEvent:responseData];
+        } actionBlock:^(NSInteger type, NSString *content) {
+            NSNumber *code = [NSNumber numberWithLong: type];
+            NSDictionary *responseData = [self convertToResult:code content:content];
+            [self sendLoginEvent:responseData];
+        }];
+    });
+}
+
 RCT_EXPORT_METHOD(dismissLoginController)
 {
     [JVERIFICATIONService dismissLoginController];

@@ -24,6 +24,7 @@ import cn.jiguang.plugins.verification.common.JLogger;
 import cn.jiguang.verifysdk.api.AuthPageEventListener;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
+import cn.jiguang.verifysdk.api.LoginSettings;
 import cn.jiguang.verifysdk.api.PreLoginListener;
 import cn.jiguang.verifysdk.api.RequestCallback;
 import cn.jiguang.verifysdk.api.VerifyListener;
@@ -114,7 +115,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         if(builder==null){
             builder = new JVerifyUIConfig.Builder();
         }
-        JVerificationInterface.setCustomUIWithConfig(builder.build());
         JVerificationInterface.loginAuth(reactContext, enable, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
@@ -124,6 +124,46 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
             @Override
             public void onEvent(int code, String content) {
                 sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
+            }
+        });
+    }
+
+    @ReactMethod
+    public void loginAuthByTimeout(ReadableMap readableMap){
+        if(builder==null){
+            builder = new JVerifyUIConfig.Builder();
+        }
+        JVerificationInterface.setCustomUIWithConfig(builder.build());
+        int time = 3000;
+        boolean enable = true;
+        if(readableMap!=null){
+            if(readableMap.hasKey(JConstans.TIME)){
+               time = readableMap.getInt(JConstans.TIME);
+            }
+            if(readableMap.hasKey(JConstans.ENABLE)){
+                enable = readableMap.getBoolean(JConstans.ENABLE);
+            }
+        }
+        LoginSettings settings = new LoginSettings();
+        settings.setAutoFinish(enable);//设置登录完成后是否自动关闭授权页
+        settings.setTimeout(time);
+        settings.setAuthPageEventListener(new AuthPageEventListener() {
+         @Override
+            public void onEvent(int code, String content) {
+                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
+            }
+        });
+        //设置授权页事件监听
+        //  new AuthPageEventListener() {
+        //     @Override
+        //     public void onEvent(int code, String content) {
+        //         sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
+        //     }
+        // }
+        JVerificationInterface.loginAuth(reactContext, settings, new VerifyListener() {
+            @Override
+            public void onResult(int code, String content, String operator) {
+                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content,operator));
             }
         });
     }

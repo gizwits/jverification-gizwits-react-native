@@ -116,6 +116,22 @@ export default class JVerification {
     }
 
     /*
+     * SDK请求授权一键登录(支持超时参数)
+     * @param enable : boolean
+     * @param timeout : number（单位s）
+     *
+     * boolean:是否自动关闭授权页，true - 是，false - 否；若此字段设置为false，请在收到一键登录回调后调用SDK提供的关闭授权页面方法
+     * */
+    static loginByTimeout({ enable, timeout }) {
+        const params = { enable, time: timeout };
+        if (Platform.OS == 'android') {
+            JVerificationModule.loginAuthByTimeout(params);
+        } else {
+            JVerificationModule.getAuthorizationWithControllerByTimeout(params);
+        }
+    }
+
+    /*
      * SDK关闭授权页面
      * */
     static dismissLoginPage() {

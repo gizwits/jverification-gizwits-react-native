@@ -1,11 +1,11 @@
 {
   "name": "jverification-gizwits-react-native",
-  "description": "更新极光认证SDK（安卓 2.6.3，iOS 2.6.2）",
+  "description": "增加极光认证超时参数支持，新增loginByTimeout方法",
   "homepage": "https://github.com/jpush/jverification-react-native",
   "main": "index.js",
   "license": "ISC",
   "author": "wicked.tc130",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpush/jverification-react-native"
