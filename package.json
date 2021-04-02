@@ -1,11 +1,11 @@
 {
   "name": "jverification-gizwits-react-native",
-  "description": "升级极光认证sdk(iOS:2.6.8,android:2.6.7)",
+  "description": "android SDK 回退至2.6.3",
   "homepage": "https://github.com/jpush/jverification-react-native",
   "main": "index.js",
   "license": "ISC",
   "author": "wicked.tc130",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpush/jverification-react-native"
