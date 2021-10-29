@@ -91,6 +91,8 @@
 #define PRIVACY_CHECK_ENABLE            @"privacyCheckEnable"       //checkBox默认状态 默认:NO
 #define PRIVACY_CHECKED_IMAGE           @"privacyCheckedImage"      //checkBox选中时图片
 #define PRIVACY_UNCHECKED_IMAGE         @"privacyUncheckedImage"    //checkBox未选中时图片
+#define CHECK_VIEW_CONSTRAINTS          @"checkViewConstraints"     //checkBox布局对象
+
 //协议
 #define PRIVACY_WEB_NAV_COLOR           @"privacyWebNavColor"       //协议页导航栏背景颜色
 #define PRIVACY_WEB_NAV_TITLE           @"privacyWebNavTitle"       //协议页导航栏标题
@@ -359,8 +361,8 @@ RCT_EXPORT_METHOD(dismissLoginController)
     config.navCustom = YES;
     config.autoLayout = YES;
     config.modalTransitionStyle =  UIModalTransitionStyleCrossDissolve;
-    
-    
+
+
     if(configParams[WINDOW_BACKGROUND_ALPHA]){
       config.windowBackgroundAlpha = [configParams[WINDOW_BACKGROUND_ALPHA] floatValue];
     }
@@ -380,7 +382,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     config.windowConstraints = @[windowConstraintY,windowConstraintH,windowConstraintX,windowConstraintW];
 //      config.windowConstraints = [self layoutConstraint:win_X y:win_Y w:win_W h:win_H];
     }
-    
+
     UIImage *windowCloseNorImage = [self imageNamed:@"default_close_icon"];
     UIImage *windowCloseSelImage = [self imageNamed:@"default_close_icon"];
     if (configParams[WINDOW_CLOSE_NOR_IMAGE] && configParams[WINDOW_CLOSE_SELECTED_IMAGE]) {
@@ -414,7 +416,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     if(configParams[BACK_GROUND_IMAGE]){
          config.authPageBackgroundImage = [self imageNamed:configParams[BACK_GROUND_IMAGE]];
      }
-    
+
     //导航栏
     if([configParams[NAV_HIDDEN] isKindOfClass:[NSNumber class]]){
          config.navCustom = [configParams[NAV_HIDDEN] boolValue];
@@ -448,9 +450,9 @@ RCT_EXPORT_METHOD(dismissLoginController)
         config.navReturnImg = [self imageNamed:configParams[NAV_RETURN_IMAGE]];
     }
   }
-  
- 
-    
+
+
+
     //状态栏
     if([configParams[STATUS_BAR_HIDDEN] isKindOfClass:[NSNumber class]]){
         config.prefersStatusBarHidden = [configParams[STATUS_BAR_HIDDEN] boolValue];
@@ -467,7 +469,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
             config.preferredStatusBarStyle = UIStatusBarStyleDefault;
         }
     }
-  
+
     //logo
     if([configParams[LOGO_HIDDEN] isKindOfClass:[NSNumber class]]){
         config.logoHidden = [configParams[LOGO_HIDDEN] boolValue];
@@ -611,6 +613,12 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *constraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:privacyCheckboxW];
     JVLayoutConstraint *constraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:privacyCheckboxH];
     config.checkViewConstraints = @[constraintX,constraintY,constraintW,constraintH];
+
+    if(configParams[CHECK_VIEW_CONSTRAINTS]){
+        NSArray *checkViewConstraints= [RCTJVerificationModule configConstraintWithAttributes:configParams[CHECK_VIEW_CONSTRAINTS]];
+        config.checkViewConstraints = checkViewConstraints;
+    }
+
     //协议
     if(configParams[PRIVACY_WEB_NAV_COLOR]){
         NSNumber *color = configParams[PRIVACY_WEB_NAV_COLOR];
@@ -656,7 +664,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     config.windowBackgroundAlpha = 0.3;
     config.windowCornerRadius = 6;
 
-    
+
     CGFloat windowW = 320;
     CGFloat windowH = 250;
     JVLayoutConstraint *windowConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
@@ -665,12 +673,12 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *windowConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:windowW];
     JVLayoutConstraint *windowConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:windowH];
     config.windowConstraints = @[windowConstraintY,windowConstraintH,windowConstraintX,windowConstraintW];
-    
+
     JVLayoutConstraint *windowConstraintW1 = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:480];
     JVLayoutConstraint *windowConstraintH1 = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:250];
     config.windowHorizontalConstraints =@[windowConstraintY,windowConstraintH1,windowConstraintX,windowConstraintW1];
-  
-    
+
+
     //弹窗close按钮
     UIImage *window_close_nor_image = [self imageNamed:@"close_icon"];
     UIImage *window_close_hig_image = [self imageNamed:@"close_icon"];
@@ -684,8 +692,8 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *windowCloseBtnConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:windowCloseBtnWidth];
     JVLayoutConstraint *windowCloseBtnConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:windowCloseBtnHeight];
     config.windowCloseBtnConstraints = @[windowCloseBtnConstraintX,windowCloseBtnConstraintY,windowCloseBtnConstraintW,windowCloseBtnConstraintH];
-    
-    
+
+
     //logo
   if(configParams[LOGO_IMAGE]){
          config.logoImg = [self imageNamed:configParams[LOGO_IMAGE]];
@@ -697,14 +705,14 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *logoConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:logoWidth];
     JVLayoutConstraint *logoConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:logoHeight];
     config.logoConstraints = @[logoConstraintX,logoConstraintY,logoConstraintW,logoConstraintH];
-    
+
     JVLayoutConstraint *logoConstraintLeft = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeLeft multiplier:1 constant:16];
-    
+
     JVLayoutConstraint *logoConstraintTop = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeTop multiplier:1 constant:11];
-    
+
     config.logoHorizontalConstraints = @[logoConstraintLeft,logoConstraintTop,logoConstraintW,logoConstraintH];
-    
-    
+
+
     //号码栏
     JVLayoutConstraint *numberConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     JVLayoutConstraint *numberConstraintY = [JVLayoutConstraint constraintWithAttribute: NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemLogo attribute:NSLayoutAttributeBottom multiplier:1 constant:14];
@@ -723,14 +731,14 @@ RCT_EXPORT_METHOD(dismissLoginController)
        UIColor *sloganTextColor =  UIColorFromRGBValue(color.integerValue);
        config.sloganTextColor = sloganTextColor;
   }
-  
+
     JVLayoutConstraint *sloganConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     JVLayoutConstraint *sloganConstraintY = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNumber attribute:NSLayoutAttributeBottom   multiplier:1 constant:4];
     JVLayoutConstraint *sloganConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:17];
     JVLayoutConstraint *sloganConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:200];
 
     config.sloganConstraints = @[sloganConstraintX,sloganConstraintY,sloganConstraintW,sloganConstraintH];
-    
+
     //登录按钮
 //    UIImage *login_nor_image = [UIImage imageNamed:@"btn_38px"];
 //    UIImage *login_dis_image = [UIImage imageNamed:@"btn_38px_ull"];
@@ -741,7 +749,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     if(configParams[LOGIN_BTN_TEXT]){
       config.logBtnText= configParams[LOGIN_BTN_TEXT];
     }
-  
+
     CGFloat loginButtonWidth = 220;
     CGFloat loginButtonHeight = 38;
     JVLayoutConstraint *loginConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
@@ -770,7 +778,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     if(configParams[PRIVACY_TEXT_SIZE]){
         config.privacyTextFontSize = [configParams[PRIVACY_TEXT_SIZE] floatValue];
     }
-   
+
     JVLayoutConstraint *privacyConstraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     JVLayoutConstraint *privacyConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:180];
     JVLayoutConstraint *privacyConstraintY = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeBottom multiplier:1 constant:-21];
@@ -786,7 +794,7 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *loadingConstraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:30];
     JVLayoutConstraint *loadingConstraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:30];
     config.loadingConstraints = @[loadingConstraintX,loadingConstraintY,loadingConstraintW,loadingConstraintH];
-    
+
 //    [JVERIFICATIONService customUIWithConfig:config customViews:^(UIView *customAreaView) {
 //
 //    }];
@@ -812,6 +820,23 @@ RCT_EXPORT_METHOD(dismissLoginController)
     JVLayoutConstraint *constraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:w];
     JVLayoutConstraint *constraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:h];
     return @[constraintX,constraintY,constraintW,constraintH];
+}
+
+// 设置宽高
++ (NSArray*)configConstraintWithAttributes:(NSArray*)keys{
+    NSAssert(keys.count == 4, @"你必须按照文档规则设置参数(centerX,centerY,width,height)");
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:4];
+    NSArray* cons = keys;
+    CGFloat centerX = [cons[0] floatValue];
+    CGFloat centerY = [cons[1] floatValue];
+    CGFloat w = [cons[2] floatValue];
+    CGFloat h = [cons[3] floatValue];
+    JVLayoutConstraint *constraintX = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeLeft multiplier:1 constant:centerX];
+    JVLayoutConstraint *constraintY = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemSuper attribute:NSLayoutAttributeBottom multiplier:1 constant:centerY];
+    JVLayoutConstraint *constraintW = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeWidth multiplier:1 constant:w];
+    JVLayoutConstraint *constraintH = [JVLayoutConstraint constraintWithAttribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:JVLayoutItemNone attribute:NSLayoutAttributeHeight multiplier:1 constant:h];
+    [constraints addObjectsFromArray:@[constraintX,constraintY,constraintW,constraintH]];
+    return constraints;
 }
 
 @end
