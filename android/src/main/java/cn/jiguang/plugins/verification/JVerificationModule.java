@@ -1,9 +1,12 @@
 package cn.jiguang.plugins.verification;
 
-import android.view.ViewGroup;
+import android.app.Activity;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ImageButton;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactRootView;
@@ -17,18 +20,22 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.jiguang.plugins.verification.common.JConstans;
 import cn.jiguang.plugins.verification.common.JLogger;
 import cn.jiguang.verifysdk.api.AuthPageEventListener;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
-import cn.jiguang.verifysdk.api.LoginSettings;
 import cn.jiguang.verifysdk.api.PreLoginListener;
+import cn.jiguang.verifysdk.api.PrivacyBean;
+import cn.jiguang.verifysdk.api.LoginSettings;
 import cn.jiguang.verifysdk.api.RequestCallback;
 import cn.jiguang.verifysdk.api.VerifyListener;
-import cn.jiguang.plugins.verification.R;
 
 public class JVerificationModule extends ReactContextBaseJavaModule {
 
@@ -115,6 +122,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         if(builder==null){
             builder = new JVerifyUIConfig.Builder();
         }
+        JVerificationInterface.setCustomUIWithConfig(builder.build());
         JVerificationInterface.loginAuth(reactContext, enable, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
@@ -153,13 +161,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                 sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
             }
         });
-        //设置授权页事件监听
-        //  new AuthPageEventListener() {
-        //     @Override
-        //     public void onEvent(int code, String content) {
-        //         sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
-        //     }
-        // }
         JVerificationInterface.loginAuth(reactContext, settings, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
@@ -170,11 +171,19 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void dismissLoginAuthActivity(){
-        JVerificationInterface.dismissLoginAuthActivity();
+        reactContext.runOnUiQueueThread(new Runnable() {
+            @Override
+            public void run() {
+                JVerificationInterface.dismissLoginAuthActivity();
+            }
+        });
+
     }
 
     @ReactMethod
     public void setCustomUIWithConfig(final ReadableMap readableMap, final ReadableArray readableArray){
+        builder = null;        
+        System.out.println("readableMap>>>:"+readableMap);
         convertToConfig(readableMap);
         reactContext.runOnUiQueueThread(new Runnable() {
             @Override
@@ -192,6 +201,40 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+    // 获取验证码
+    @ReactMethod
+    public void getSmsCode(ReadableMap object, final Callback jsCallback) {
+        System.out.println("object:"+object);
+        String phoneNumber = "";
+        String signID = "";
+        String templateID = "";
+        if (object != null) {
+            phoneNumber = object.hasKey(JConstans.PHONE_NUMBER) ? object.getString(JConstans.PHONE_NUMBER):"18925247365";
+            signID = object.hasKey(JConstans.SING_ID) ? object.getString(JConstans.SING_ID):"13649";
+            templateID = object.hasKey(JConstans.TEMPLATE_ID) ? object.getString(JConstans.TEMPLATE_ID):"1";
+        }
+        JVerificationInterface.getSmsCode(reactContext, phoneNumber, signID, templateID, new RequestCallback<String>() {
+            @Override
+            public void onResult(int code, String msg) {
+                if (jsCallback == null) return;
+                WritableMap result = Arguments.createMap();
+                result.putInt("code", code);
+                if(code == 3000) {
+                    result.putString("uuid", msg);
+                    result.putString("msg", "");
+                } else {
+                    result.putString("uuid", "");
+                    result.putString("msg", msg);
+                }
+                jsCallback.invoke(result);
+            }
+        });
+    }
+    // 设置前后两次获取验证码的时间间隔
+    @ReactMethod
+    public void setTimeWithConfig(int time){
+        JVerificationInterface.setSmsIntervalTime(time);
     }
 
     private void sendEvent(String eventName, WritableMap params) {
@@ -226,25 +269,6 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
     private void convertToConfig(ReadableMap readableMap){
         if(builder==null){
             builder = new JVerifyUIConfig.Builder();
-        }
-        if(readableMap.hasKey(JConstans.SHOW_WINDOW)){
-            if(readableMap.getBoolean(JConstans.SHOW_WINDOW)){
-                int win_w = dp2Pix(readableMap.getInt(JConstans.WINDOW_W));
-                int win_h = dp2Pix(readableMap.getInt(JConstans.WINDOW_H));
-                int win_cx = dp2Pix(readableMap.getInt(JConstans.WINDOW_CENTER_X));
-                int win_cy = dp2Pix(readableMap.getInt(JConstans.WINDOW_CENTER_Y));
-                builder.setDialogTheme(win_w, win_h, win_cx, win_cy, false);
-                
-                // 关闭按钮
-                ImageView closeButton = new ImageView(reactContext.getApplicationContext());
-                RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                mLayoutParams1.setMargins(0, dp2Pix(10.0f),dp2Pix(10),0);
-                mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
-                mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE);
-                closeButton.setLayoutParams(mLayoutParams1);
-                closeButton.setImageResource(R.drawable.btn_close);
-                builder.addCustomView(closeButton, true, null);
-            }
         }
         //背景图
         if(readableMap.hasKey(JConstans.BACK_GROUND_IMAGE)){
@@ -362,6 +386,8 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
             builder.setLogBtnTextColor(readableMap.getInt(JConstans.LOGIN_BTN_TEXT_COLOR));
         }
         if(readableMap.hasKey(JConstans.LOGIN_BTN_IMAGE_SELECTOR)){
+            // TODO:
+            JLogger.w("setLogBtnImgPath:"+readableMap.getString(JConstans.LOGIN_BTN_IMAGE_SELECTOR));
             builder.setLogBtnImgPath(readableMap.getString(JConstans.LOGIN_BTN_IMAGE_SELECTOR));
         }
         if(readableMap.hasKey(JConstans.LOGIN_BTN_X)){
@@ -377,13 +403,30 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
             builder.setLogBtnHeight(dp2Pix(readableMap.getInt(JConstans.LOGIN_BTN_H)));
         }
         //协议
-        if(readableMap.hasKey(JConstans.PRIVACY_ONE)){
+        if(readableMap.hasKey(JConstans.PRIVACY_ONE)){//过期 2.7.3+不生效
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_ONE);
             builder.setAppPrivacyOne(array.getString(0),array.getString(1));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_TWO)){
+        if(readableMap.hasKey(JConstans.PRIVACY_TWO)){//过期 2.7.3+不生效
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_TWO);
             builder.setAppPrivacyTwo(array.getString(0),array.getString(1));
+        }
+        if (readableMap.hasKey(JConstans.PRIVACY_NAME_AND_URL_BEANLIST)) {// since 273
+            ReadableArray jsonArray = readableMap.getArray(JConstans.PRIVACY_NAME_AND_URL_BEANLIST);
+            if(jsonArray!=null&&jsonArray.size()!=0){
+                List<PrivacyBean> beanArrayList = new ArrayList<>();
+
+                for (int i=0;i<jsonArray.size();i++){
+                    ReadableMap jsonObject1 = jsonArray.getMap(i);
+                    String name = jsonObject1.getString("name");
+                    String url = jsonObject1.getString("url");
+                    String beforeName = jsonObject1.getString("beforeName");
+                    String afterName = jsonObject1.getString("afterName");
+                    JLogger.d("setPrivacyNameAndUrlBeanList:"+beforeName+name+afterName+":"+url);
+                    beanArrayList.add(new PrivacyBean(name!=null?name:"",url!=null?url:"",beforeName!=null?beforeName:"",afterName!=null?afterName:""));
+                }
+                builder.setPrivacyNameAndUrlBeanList(beanArrayList);
+            }
         }
         if(readableMap.hasKey(JConstans.PRIVACY_COLOR)){
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_COLOR);
@@ -391,7 +434,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         }
         if(readableMap.hasKey(JConstans.PRIVACY_TEXT)){
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_TEXT);
-            builder.setPrivacyText(array.getString(0),array.getString(1),array.getString(2),array.getString(3));
+            builder.setPrivacyText(array.getString(0),array.getString(1));
         }
         if(readableMap.hasKey(JConstans.PRIVACY_TEXT_SIZE)){
             builder.setPrivacyTextSize(readableMap.getInt(JConstans.PRIVACY_TEXT_SIZE));
@@ -408,6 +451,16 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                 builder.setPrivacyTextCenterGravity(false);
             }
         }
+        if (readableMap.hasKey(JConstans.EnableHintToast)){
+           boolean show = readableMap.getBoolean(JConstans.EnableHintToast);
+            if (show == true) {
+                String toastText = readableMap.getString(JConstans.PRIVACY_NO_CHECK_TOAST_TEXT);
+                Toast toast = Toast.makeText(this.reactContext,toastText,0);
+                builder.enableHintToast(true,toast);
+            }
+        }
+
+
         if(readableMap.hasKey(JConstans.PRIVACY_X)){
             builder.setPrivacyOffsetX(dp2Pix(readableMap.getInt(JConstans.PRIVACY_X)));
         }
@@ -435,9 +488,9 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_COLOR)){
             builder.setPrivacyNavColor(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_COLOR));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE)){
-            builder.setPrivacyNavTitleTextSize(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE));
-        }
+         if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE)){
+             builder.setPrivacyNavTitleTextSize(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE));
+         }
         if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_COLOR)){
             builder.setPrivacyNavTitleTextColor(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_COLOR));
         }
@@ -454,6 +507,34 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                 JLogger.e("setPrivacyWebNavReturnBtnImage error:"+e.getMessage());
             }
         }
+        //  授权页动画
+        if (readableMap.hasKey(JConstans.PRIVACY_NEED_START_ANIM)) {
+            builder.setNeedStartAnim(readableMap.getBoolean(JConstans.PRIVACY_NEED_START_ANIM));
+        }
+        if (readableMap.hasKey(JConstans.PRIVACY_NEED_CLOSE_ANIM)) {
+            builder.setNeedCloseAnim(readableMap.getBoolean(JConstans.PRIVACY_NEED_CLOSE_ANIM));
+        }
+        //  授权页弹窗模式
+        if (readableMap.hasKey(JConstans.PRIVACY_DIALOG_THEME)) {
+            ReadableArray array = readableMap.getArray(JConstans.PRIVACY_DIALOG_THEME);
+            builder.setDialogTheme(array.getInt(0), array.getInt(1),array.getInt(2), array.getInt(3), array.getBoolean(4));
+        }
+        // 弹窗是否需要关闭
+        if (readableMap.hasKey(JConstans.PRIVACY_NEED_CLOSE) && readableMap.hasKey(JConstans.PRIVACY_CLOSE_THEME)) {
+            boolean needClose = readableMap.getBoolean(JConstans.PRIVACY_NEED_CLOSE);
+            if(needClose) {
+                //自定义返回按钮示例 
+                ImageButton sampleReturnBtn = new ImageButton(reactContext);
+                sampleReturnBtn.setImageResource(R.drawable.umcsdk_return_bg);
+                RelativeLayout.LayoutParams returnLP = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                // 返回按钮样式
+                ReadableArray array = readableMap.hasKey(JConstans.PRIVACY_CLOSE_THEME) ? readableMap.getArray(JConstans.PRIVACY_CLOSE_THEME) : null;
+                returnLP.setMargins(array.getInt(0), array.getInt(1),array.getInt(2), array.getInt(3));
+                sampleReturnBtn.setLayoutParams(returnLP);
+                builder.addCustomView(sampleReturnBtn,true,null);
+            }
+        }
+
     }
 
     private ReactRootView convertToView(ReadableMap readableMap){
@@ -461,10 +542,20 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         ReadableArray viewPoint = readableMap.hasKey(JConstans.CUSTOM_VIEW_POINT) ? readableMap.getArray(JConstans.CUSTOM_VIEW_POINT) : null;
         JLogger.w("convertToView: viewName="+viewName);
         if (TextUtils.isEmpty(viewName)) {
+            JLogger.e("viewName is null");
             return null;
         }
         ReactRootView reactView = new ReactRootView(reactContext);
-        ReactApplication application = (ReactApplication)getCurrentActivity().getApplication();
+        Activity currentActivity =  getCurrentActivity();
+        if (currentActivity == null){
+            JLogger.e("currentActivity is null");
+            return  null;
+        }
+        ReactApplication application = (ReactApplication)currentActivity.getApplication();
+        if (application == null){
+            JLogger.e("application is null");
+            return  null;
+        }
         reactView.startReactApplication(application.getReactNativeHost().getReactInstanceManager(), viewName);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         if (viewPoint != null) {
@@ -479,7 +570,7 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
         reactView.setLayoutParams(layoutParams);
         return reactView;
     }
-
+    
     private int dp2Pix(float dp) {
         try {
             float density = reactContext.getApplicationContext().getResources().getDisplayMetrics().density;

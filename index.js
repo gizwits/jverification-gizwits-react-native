@@ -8,6 +8,7 @@ const JVerificationModule = NativeModules.JVerificationModule;
 
 const listeners = {};
 const LoginEvent = 'LoginEvent';  //登录事件
+const UnCheckBox = 'UncheckBoxCallBack';  //iOS 未选中隐私协议CheckBox,点击登录按钮的回调事件
 
 export default class JVerification {
 
@@ -115,6 +116,18 @@ export default class JVerification {
         }
     }
 
+     /*
+     * SDK关闭授权页面
+     * */
+     static dismissLoginPage() {
+        if (Platform.OS == 'android') {
+            JVerificationModule.dismissLoginAuthActivity();
+        }
+        else {
+            JVerificationModule.dismissLoginController();
+        }
+    }
+
     /*
      * SDK请求授权一键登录(支持超时参数)
      * @param enable : boolean
@@ -128,18 +141,6 @@ export default class JVerification {
             JVerificationModule.loginAuthByTimeout(params);
         } else {
             JVerificationModule.getAuthorizationWithControllerByTimeout(params);
-        }
-    }
-
-    /*
-     * SDK关闭授权页面
-     * */
-    static dismissLoginPage() {
-        if (Platform.OS == 'android') {
-            JVerificationModule.dismissLoginAuthActivity();
-        }
-        else {
-            JVerificationModule.dismissLoginController();
         }
     }
 
@@ -262,6 +263,13 @@ export default class JVerification {
             });
     }
 
+    static addUncheckBoxEventListener(callback) {
+        listeners[callback] = DeviceEventEmitter.addListener(
+            UnCheckBox, result => {
+                callback(result);
+           });
+    }
+
     //移除事件
     static removeListener(callback) {
         if (!listeners[callback]) {
@@ -270,5 +278,23 @@ export default class JVerification {
         listeners[callback].remove();
         listeners[callback] = null;
     }
+
+    /*
+    * SDK获取验证码
+    * @param params = {'phonenum':String,'signid':String,'tempid':String}
+    * @param callback = (result) => {"code":int,'msg':String}
+    * */
+    static getVerifyCode(params,callback) {
+        JVerificationModule.getSmsCode(params,callback);
+    }
+
+    /*
+     * 设置前后两次获取验证码的时间间隔
+     * @param time : int
+     * */
+    static setCodeTime(time) {
+        JVerificationModule.setTimeWithConfig(time);
+    }
+
 
 }

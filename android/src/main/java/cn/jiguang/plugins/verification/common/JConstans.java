@@ -62,24 +62,27 @@ public class JConstans {
     public static final String LOGIN_BTN_NORMAL_IMAGE  = "loginBtnNormalImage";             //登录按钮正常图片 （仅ios,三个同时设置生效）
     public static final String LOGIN_BTN_DISABLED_IMAGE  = "loginBtnDisabledImage";         //登录按钮失效图片  (仅ios,三个同时设置生效
     public static final String LOGIN_BTN_SELECTED_IMAGE  = "loginBtnSelectedImage";         //登录按钮按下图片  (仅ios,三个同时设置生效）
-    public static final String LOGIN_BTN_X = "loginBtnX";                             //登录按钮相对于屏幕左边x轴偏移
-    public static final String LOGIN_BTN_Y = "loginBtnY";                             //登录按钮相对于标题栏下边缘y偏移
-    public static final String LOGIN_BTN_W = "loginBtnW";                               //登录按钮宽度
-    public static final String LOGIN_BTN_H = "loginBtnH";                              //登录按钮高度
+    public static final String LOGIN_BTN_X = "loginBtnOffsetX";                             //登录按钮相对于屏幕左边x轴偏移
+    public static final String LOGIN_BTN_Y = "loginBtnOffsetY";                             //登录按钮相对于标题栏下边缘y偏移
+    public static final String LOGIN_BTN_W = "loginBtnWidth";                               //登录按钮宽度
+    public static final String LOGIN_BTN_H = "loginBtnHeight";                              //登录按钮高度
 
-    public static final String PRIVACY_ONE  = "privacyOne";                                 //隐私条款一
-    public static final String PRIVACY_TWO  = "privacyTwo";                                 //隐私条款二
+    public static final String PRIVACY_ONE  = "privacyOne";                                 //隐私条款一 过期 2.7.3+不生效
+    public static final String PRIVACY_TWO  = "privacyTwo";                                 //隐私条款二  过期 2.7.3+不生效
+    public static final String PRIVACY_NAME_AND_URL_BEANLIST  = "privacyNameAndUrlBeanList";                  //隐私条款组合
     public static final String PRIVACY_COLOR  = "privacyColor";                             //隐私条款颜色
     public static final String PRIVACY_TEXT  = "privacyText";                               //隐私条款名称外的文字
     public static final String PRIVACY_TEXT_SIZE  = "privacyTextSize";                      //隐私条款文字字体大小
     public static final String PRIVACY_TEXT_GRAVITY_MODE  = "privacyTextGravityMode";       //隐私条款文字是否居中对齐（默认左对齐）
     public static final String PRIVACY_TEXT_GRAVITY_LEFT  = "left";                         //隐私条款文字是否居中对齐（默认左对齐）
     public static final String PRIVACY_TEXT_GRAVITY_CENTER  = "center";                     //隐私条款文字是否居中对齐（默认左对齐）
-    public static final String PRIVACY_X = "privacyX";                                //隐私条款相对于屏幕左边x轴偏移
-    public static final String PRIVACY_Y = "privacyY";                                //隐私条款相对于授权页面底部下边缘y偏移
+    public static final String PRIVACY_X = "privacyOffsetX";                                //隐私条款相对于屏幕左边x轴偏移
+    public static final String PRIVACY_Y = "privacyOffsetY";                                //隐私条款相对于授权页面底部下边缘y偏移
     public static final String PRIVACY_W = "privacyW";                                      //隐私条款名称外的文字栏宽度(单位:dp)
     public static final String PRIVACY_H = "privacyH";                                      //隐私条款名称外的文字栏高度度(单位:dp)
     public static final String PRIVACY_BOOK_SYMBOL_ENABLE = "privacyBookSymbolEnable";      //隐私条款运营商协议名是否加书名号
+    public static final String EnableHintToast = "unAgreePrivacyHintToast";                                      //导航栏颜色
+    public static final String PRIVACY_NO_CHECK_TOAST_TEXT = "privacyNoCheckToastText";     //未勾选协议时提示语
 
     public static final String PRIVACY_CHECKBOX_HIDDEN  = "privacyCheckboxHidden";          //隐私条款checkbox是否隐藏
     public static final String PRIVACY_CHECKBOX_SIZE  = "privacyCheckboxSize";              //设置隐私条款checkbox尺寸
@@ -96,10 +99,19 @@ public class JConstans {
     public static final String CUSTOM_VIEW_NAME = "customViewName";
     public static final String CUSTOM_VIEW_POINT = "customViewPoint";
 
-    public static final String SHOW_WINDOW = "showWindow";  //是否显示弹窗
-    public static final String WINDOW_CENTER_X = "windowConstraintsCenterX"; //弹窗布局对象中心x
-    public static final String WINDOW_CENTER_Y = "windowConstraintsCenterY"; //弹窗布局对象中心y
-    public static final String WINDOW_W = "windowConstraintsW";  //弹窗布局对象w
-    public static final String WINDOW_H = "windowConstraintsH";  //弹窗布局对象h
+    //*******************************验证码*******************************
+    public static final String PHONE_NUMBER = "phoneNumber";
+    public static final String SING_ID = "signID";
+    public static final String TEMPLATE_ID = "templateID";
+
+    // 授权页动画
+    public static final String PRIVACY_NEED_START_ANIM = "privacyNeedStartAnim";
+    public static final String PRIVACY_NEED_CLOSE_ANIM = "privacyNeedCloseAnim";
+    // 授权页弹窗模式
+    public static final String PRIVACY_DIALOG_THEME = "privacyDialogTheme";
+    // 弹窗是否需要配置关闭按钮
+    public static final String PRIVACY_NEED_CLOSE = "privacyNeedClose";
+    // 弹窗关闭按钮模式
+    public static final String PRIVACY_CLOSE_THEME = "privacyCloseTheme";
 
 }
