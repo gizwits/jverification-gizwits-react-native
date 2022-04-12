@@ -7,6 +7,9 @@ import android.widget.RelativeLayout;
 import android.widget.ImageButton;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.view.Gravity;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactRootView;
@@ -502,6 +505,14 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                 int imageID = field.getInt(field.getName());
                 ImageView view = new ImageView(reactContext);
                 view.setImageResource(imageID);
+                if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH) && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT)){
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH), readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT));
+                    params.gravity = Gravity.CENTER;
+                    if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X) && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y)){
+                    params.setMargins(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X),readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y),0,0);
+                    }  
+                    view.setLayoutParams(params);
+                }
                 builder.setPrivacyNavReturnBtn(view);
             }catch (Exception e){
                 JLogger.e("setPrivacyWebNavReturnBtnImage error:"+e.getMessage());

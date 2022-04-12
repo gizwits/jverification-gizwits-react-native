@@ -95,6 +95,10 @@ public class JConstans {
     public static final String PRIVACY_WEB_NAV_TITLE_SIZE  = "privacyWebNavTitleSize";      //协议展示web页面导航栏标题文字大小
     public static final String PRIVACY_WEB_NAV_TITLE_COLOR  = "privacyWebNavTitleColor";    //协议展示web页面导航栏标题文字颜色
     public static final String PRIVACY_WEB_NAV_RETURN_IMAGE = "privacyWebNavReturnImage";   //协议展示web页面导航栏返回按钮图标
+    public static final String PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH = "privacyWebNavReturnImageWidth";   //协议展示web页面导航栏返回按钮图标宽度
+    public static final String PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT = "privacyWebNavReturnImageHeight";   //协议展示web页面导航栏返回按钮图标高度
+    public static final String PRIVACY_WEB_NAV_RETURN_IMAGE_X = "privacyWebNavReturnImageX";   //协议展示web页面导航栏返回按钮图标X
+    public static final String PRIVACY_WEB_NAV_RETURN_IMAGE_Y = "privacyWebNavReturnImageY";   //协议展示web页面导航栏返回按钮图标Y
 
     public static final String CUSTOM_VIEW_NAME = "customViewName";
     public static final String CUSTOM_VIEW_POINT = "customViewPoint";
