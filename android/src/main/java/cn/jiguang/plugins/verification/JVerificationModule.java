@@ -200,7 +200,9 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
                         builder = new JVerifyUIConfig.Builder();
                     }
                     ReactRootView view = convertToView(readableArray.getMap(i));
-                    builder.addCustomView(view,false,null);
+                    if(view != null){
+                        builder.addCustomView(view,false,null);
+                    }
                 }
             }
         });
