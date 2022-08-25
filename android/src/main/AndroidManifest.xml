@@ -19,13 +19,21 @@
     <application>
         <!-- since 2.0.0 optional 可选项，使用一键登录功能必须添加  -->
         <!-- since 2.1.1 optional 可选项，通过screenOrientation设置授权页面横竖屏展示  -->
+       <!--使用认证版本小于2.9.0时使用com.cmic.sso.sdk.activity.LoginAuthActivity-->
+<!--        <activity-->
+<!--            android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"-->
+<!--            android:theme="@style/ActivityDialogStyle"-->
+<!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:launchMode="singleTop">-->
+<!--        </activity>-->
+        <!--从认证版本2.9.0开始使用com.cmic.gen.sdk.view.GenLoginAuthActivity-->
         <activity
-            android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
-            android:theme="@style/ActivityDialogStyle"
+            android:name="com.cmic.gen.sdk.view.GenLoginAuthActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:theme="@style/ActivityDialogStyle"/>
         <!-- since 2.0.0 optional 可选项，使用一键登录功能必须添加  -->
         <!-- since 2.1.1 optional 可选项，通过screenOrientation设置授权页面横竖屏展示  -->
         <activity android:name="cn.jiguang.verifysdk.CtLoginActivity"
