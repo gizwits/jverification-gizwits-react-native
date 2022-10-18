@@ -56,124 +56,129 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setDebugMode(boolean enable){
+    public void setDebugMode(boolean enable) {
         JVerificationInterface.setDebugMode(enable);
         JLogger.setLoggerEnable(enable);
     }
 
     @ReactMethod
-    public void init(){
+    public void init() {
         JVerificationInterface.init(reactContext);
     }
 
     @ReactMethod
-    public void init(ReadableMap readableMap, final Callback callback){
+    public void init(ReadableMap readableMap, final Callback callback) {
         int time = 10000;
-        if(readableMap!=null){
-            time = readableMap.hasKey(JConstans.TIME)?readableMap.getInt(JConstans.TIME):5000;
+        if (readableMap != null) {
+            time = readableMap.hasKey(JConstans.TIME) ? readableMap.getInt(JConstans.TIME) : 5000;
         }
-        JVerificationInterface.init(reactContext,time, new RequestCallback<String>() {
+        JVerificationInterface.init(reactContext, time, new RequestCallback<String>() {
             @Override
             public void onResult(int code, String content) {
-                if(callback==null)return;
-                callback.invoke(convertToResult(code,content));
+                if (callback == null)
+                    return;
+                callback.invoke(convertToResult(code, content));
             }
         });
     }
 
     @ReactMethod
-    public void isInitSuccess(Callback callback){
-        if(callback==null)return;
+    public void isInitSuccess(Callback callback) {
+        if (callback == null)
+            return;
         callback.invoke(convertToResult(JVerificationInterface.isInitSuccess()));
     }
 
     @ReactMethod
-    public void checkVerifyEnable(Callback callback){
-        if(callback==null)return;
+    public void checkVerifyEnable(Callback callback) {
+        if (callback == null)
+            return;
         callback.invoke(convertToResult(JVerificationInterface.checkVerifyEnable(reactContext)));
     }
 
     @ReactMethod
-    public void getToken(int time, final Callback callback){
+    public void getToken(int time, final Callback callback) {
         JVerificationInterface.getToken(reactContext, time, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
-                if(callback==null)return;
-                callback.invoke(convertToResult(code,content,operator));
+                if (callback == null)
+                    return;
+                callback.invoke(convertToResult(code, content, operator));
             }
         });
     }
 
     @ReactMethod
-    public void preLogin(int time,final  Callback callback){
+    public void preLogin(int time, final Callback callback) {
         JVerificationInterface.preLogin(reactContext, time, new PreLoginListener() {
             @Override
             public void onResult(int code, String content) {
-                if(callback==null)return;
-                callback.invoke(convertToResult(code,content));
+                if (callback == null)
+                    return;
+                callback.invoke(convertToResult(code, content));
             }
         });
     }
 
     @ReactMethod
-    public void clearPreLoginCache(){
+    public void clearPreLoginCache() {
         JVerificationInterface.clearPreLoginCache();
     }
 
     @ReactMethod
-    public void loginAuth(boolean enable){
-        if(builder==null){
+    public void loginAuth(boolean enable) {
+        if (builder == null) {
             builder = new JVerifyUIConfig.Builder();
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
         JVerificationInterface.loginAuth(reactContext, enable, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
-                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content,operator));
+                sendEvent(JConstans.LOGIN_EVENT, convertToResult(code, content, operator));
             }
         }, new AuthPageEventListener() {
             @Override
             public void onEvent(int code, String content) {
-                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
+                sendEvent(JConstans.LOGIN_EVENT, convertToResult(code, content));
             }
         });
     }
 
     @ReactMethod
-    public void loginAuthByTimeout(ReadableMap readableMap){
-        if(builder==null){
+    public void loginAuthByTimeout(ReadableMap readableMap) {
+        if (builder == null) {
             builder = new JVerifyUIConfig.Builder();
         }
         JVerificationInterface.setCustomUIWithConfig(builder.build());
         int time = 3000;
         boolean enable = true;
-        if(readableMap!=null){
-            if(readableMap.hasKey(JConstans.TIME)){
-               time = readableMap.getInt(JConstans.TIME);
+        if (readableMap != null) {
+            if (readableMap.hasKey(JConstans.TIME)) {
+                time = readableMap.getInt(JConstans.TIME);
             }
-            if(readableMap.hasKey(JConstans.ENABLE)){
+            if (readableMap.hasKey(JConstans.ENABLE)) {
                 enable = readableMap.getBoolean(JConstans.ENABLE);
             }
         }
         LoginSettings settings = new LoginSettings();
-        settings.setAutoFinish(enable);//设置登录完成后是否自动关闭授权页
+        settings.setAutoFinish(enable);// 设置登录完成后是否自动关闭授权页
         settings.setTimeout(time);
         settings.setAuthPageEventListener(new AuthPageEventListener() {
-         @Override
+            @Override
             public void onEvent(int code, String content) {
-                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content));
+                sendEvent(JConstans.LOGIN_EVENT, convertToResult(code, content));
             }
         });
         JVerificationInterface.loginAuth(reactContext, settings, new VerifyListener() {
             @Override
             public void onResult(int code, String content, String operator) {
-                sendEvent(JConstans.LOGIN_EVENT,convertToResult(code,content,operator));
+                sendEvent(JConstans.LOGIN_EVENT, convertToResult(code, content, operator));
             }
         });
     }
 
     @ReactMethod
-    public void dismissLoginAuthActivity(){
+    public void dismissLoginAuthActivity() {
         reactContext.runOnUiQueueThread(new Runnable() {
             @Override
             public void run() {
@@ -184,46 +189,55 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setCustomUIWithConfig(final ReadableMap readableMap, final ReadableArray readableArray){
+    public void setCustomUIWithConfig(final ReadableMap readableMap, final ReadableArray readableArray) {
         builder = null;        
-        System.out.println("readableMap>>>:"+readableMap);
+        System.out.println("readableMap>>>:" + readableMap);
         convertToConfig(readableMap);
         reactContext.runOnUiQueueThread(new Runnable() {
             @Override
             public void run() {
-                if(readableArray==null){
+                if (readableArray == null) {
                     JLogger.w(JConstans.PARAMS_NULL);
                     return;
                 }
-                for (int i = 0;i<readableArray.size();i++){
-                    if(builder==null){
+                for (int i = 0; i < readableArray.size(); i++) {
+                    if (builder == null) {
                         builder = new JVerifyUIConfig.Builder();
                     }
                     ReactRootView view = convertToView(readableArray.getMap(i));
-                    builder.addCustomView(view,false,null);
+                    if (view != null) {
+                        try {
+                            builder.addCustomView(view, false, null);
+                        } catch (NullPointerException e) {
+                            JLogger.w("builder addCustomView error:" + e.getMessage());
+                        }
+                    }
                 }
             }
         });
     }
+
     // 获取验证码
     @ReactMethod
     public void getSmsCode(ReadableMap object, final Callback jsCallback) {
-        System.out.println("object:"+object);
+        System.out.println("object:" + object);
         String phoneNumber = "";
         String signID = "";
         String templateID = "";
         if (object != null) {
-            phoneNumber = object.hasKey(JConstans.PHONE_NUMBER) ? object.getString(JConstans.PHONE_NUMBER):"18925247365";
-            signID = object.hasKey(JConstans.SING_ID) ? object.getString(JConstans.SING_ID):"13649";
-            templateID = object.hasKey(JConstans.TEMPLATE_ID) ? object.getString(JConstans.TEMPLATE_ID):"1";
+            phoneNumber = object.hasKey(JConstans.PHONE_NUMBER) ? object.getString(JConstans.PHONE_NUMBER)
+                    : "18925247365";
+            signID = object.hasKey(JConstans.SING_ID) ? object.getString(JConstans.SING_ID) : "13649";
+            templateID = object.hasKey(JConstans.TEMPLATE_ID) ? object.getString(JConstans.TEMPLATE_ID) : "1";
         }
         JVerificationInterface.getSmsCode(reactContext, phoneNumber, signID, templateID, new RequestCallback<String>() {
             @Override
             public void onResult(int code, String msg) {
-                if (jsCallback == null) return;
+                if (jsCallback == null)
+                    return;
                 WritableMap result = Arguments.createMap();
                 result.putInt("code", code);
-                if(code == 3000) {
+                if (code == 3000) {
                     result.putString("uuid", msg);
                     result.putString("msg", "");
                 } else {
@@ -234,341 +248,359 @@ public class JVerificationModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
     // 设置前后两次获取验证码的时间间隔
     @ReactMethod
-    public void setTimeWithConfig(int time){
+    public void setTimeWithConfig(int time) {
         JVerificationInterface.setSmsIntervalTime(time);
     }
 
     private void sendEvent(String eventName, WritableMap params) {
         try {
             reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-        }catch (Throwable throwable){
-            JLogger.e("sendEvent error:"+throwable.getMessage());
+        } catch (Throwable throwable) {
+            JLogger.e("sendEvent error:" + throwable.getMessage());
         }
     }
 
-    private WritableMap convertToResult(boolean enable){
+    private WritableMap convertToResult(boolean enable) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putBoolean(JConstans.ENABLE,enable);
+        writableMap.putBoolean(JConstans.ENABLE, enable);
         return writableMap;
     }
 
-    private WritableMap convertToResult(int code,String content){
+    private WritableMap convertToResult(int code, String content) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putInt(JConstans.CODE,code);
-        writableMap.putString(JConstans.CONTENT,content);
+        writableMap.putInt(JConstans.CODE, code);
+        writableMap.putString(JConstans.CONTENT, content);
         return writableMap;
     }
 
-    private WritableMap convertToResult(int code,String content,String operator){
+    private WritableMap convertToResult(int code, String content, String operator) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putInt(JConstans.CODE,code);
-        writableMap.putString(JConstans.CONTENT,content);
-        writableMap.putString(JConstans.OPERATOR,operator);
+        writableMap.putInt(JConstans.CODE, code);
+        writableMap.putString(JConstans.CONTENT, content);
+        writableMap.putString(JConstans.OPERATOR, operator);
         return writableMap;
     }
 
-    private void convertToConfig(ReadableMap readableMap){
-        if(builder==null){
+    private void convertToConfig(ReadableMap readableMap) {
+        if (builder == null) {
             builder = new JVerifyUIConfig.Builder();
         }
-        //背景图
-        if(readableMap.hasKey(JConstans.BACK_GROUND_IMAGE)){
+        // 背景图
+        if (readableMap.hasKey(JConstans.BACK_GROUND_IMAGE)) {
             builder.setAuthBGImgPath(readableMap.getString(JConstans.BACK_GROUND_IMAGE));
         }
-        //状态栏
-        if(readableMap.hasKey(JConstans.STATUS_BAR_HIDDEN)){
+        // 状态栏
+        if (readableMap.hasKey(JConstans.STATUS_BAR_HIDDEN)) {
             builder.setStatusBarHidden(readableMap.getBoolean(JConstans.STATUS_BAR_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.STATUS_BAR_MODE)){
-            if(readableMap.getString(JConstans.STATUS_BAR_MODE).equals(JConstans.STATUS_BAR_MODE_LIGHT)){
+        if (readableMap.hasKey(JConstans.STATUS_BAR_MODE)) {
+            if (readableMap.getString(JConstans.STATUS_BAR_MODE).equals(JConstans.STATUS_BAR_MODE_LIGHT)) {
                 builder.setStatusBarDarkMode(false);
-            }else if(readableMap.getString(JConstans.STATUS_BAR_MODE).equals(JConstans.STATUS_BAR_MODE_DARK)){
+            } else if (readableMap.getString(JConstans.STATUS_BAR_MODE).equals(JConstans.STATUS_BAR_MODE_DARK)) {
                 builder.setStatusBarDarkMode(true);
-            }else {
+            } else {
                 builder.setStatusBarColorWithNav(true);
             }
         }
-        //导航栏
-        if(readableMap.hasKey(JConstans.NAV_HIDDEN)){
+        // 导航栏
+        if (readableMap.hasKey(JConstans.NAV_HIDDEN)) {
             builder.setNavHidden(readableMap.getBoolean(JConstans.NAV_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.NAV_COLOR)){
+        if (readableMap.hasKey(JConstans.NAV_COLOR)) {
             builder.setNavColor(readableMap.getInt(JConstans.NAV_COLOR));
         }
-        if(readableMap.hasKey(JConstans.NAV_TITLE)){
+        if (readableMap.hasKey(JConstans.NAV_TITLE)) {
             builder.setNavText(readableMap.getString(JConstans.NAV_TITLE));
         }
-        if(readableMap.hasKey(JConstans.NAV_TITLE_SIZE)){
+        if (readableMap.hasKey(JConstans.NAV_TITLE_SIZE)) {
             builder.setNavTextSize(readableMap.getInt(JConstans.NAV_TITLE_SIZE));
         }
-        if(readableMap.hasKey(JConstans.NAV_TITLE_COLOR)){
+        if (readableMap.hasKey(JConstans.NAV_TITLE_COLOR)) {
             builder.setNavTextColor(readableMap.getInt(JConstans.NAV_TITLE_COLOR));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_HIDDEN)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_HIDDEN)) {
             builder.setNavReturnBtnHidden(readableMap.getBoolean(JConstans.NAV_RETURN_BTN_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_IMAGE)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_IMAGE)) {
             builder.setNavReturnImgPath(readableMap.getString(JConstans.NAV_RETURN_BTN_IMAGE));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_X)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_X)) {
             builder.setNavReturnBtnOffsetX(dp2Pix(readableMap.getInt(JConstans.NAV_RETURN_BTN_X)));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_Y)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_Y)) {
             builder.setNavReturnBtnOffsetY(dp2Pix(readableMap.getInt(JConstans.NAV_RETURN_BTN_Y)));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_W)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_W)) {
             builder.setNavReturnBtnWidth(dp2Pix(readableMap.getInt(JConstans.NAV_RETURN_BTN_W)));
         }
-        if(readableMap.hasKey(JConstans.NAV_RETURN_BTN_H)){
+        if (readableMap.hasKey(JConstans.NAV_RETURN_BTN_H)) {
             builder.setNavReturnBtnHeight(dp2Pix(readableMap.getInt(JConstans.NAV_RETURN_BTN_H)));
         }
-        //logo
-        if(readableMap.hasKey(JConstans.LOGO_HIDDEN)){
+        // logo
+        if (readableMap.hasKey(JConstans.LOGO_HIDDEN)) {
             builder.setLogoHidden(readableMap.getBoolean(JConstans.LOGO_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.LOGO_IMAGE)){
+        if (readableMap.hasKey(JConstans.LOGO_IMAGE)) {
             builder.setLogoImgPath(readableMap.getString(JConstans.LOGO_IMAGE));
         }
-        if(readableMap.hasKey(JConstans.LOGO_X)){
+        if (readableMap.hasKey(JConstans.LOGO_X)) {
             builder.setLogoOffsetX(dp2Pix(readableMap.getInt(JConstans.LOGO_X)));
         }
-        if(readableMap.hasKey(JConstans.LOGO_Y)){
+        if (readableMap.hasKey(JConstans.LOGO_Y)) {
             builder.setLogoOffsetY(dp2Pix(readableMap.getInt(JConstans.LOGO_Y)));
         }
-        if(readableMap.hasKey(JConstans.LOGO_W)){
+        if (readableMap.hasKey(JConstans.LOGO_W)) {
             builder.setLogoWidth(dp2Pix(readableMap.getInt(JConstans.LOGO_W)));
         }
-        if(readableMap.hasKey(JConstans.LOGO_H)){
+        if (readableMap.hasKey(JConstans.LOGO_H)) {
             builder.setLogoHeight(dp2Pix(readableMap.getInt(JConstans.LOGO_H)));
         }
-        //号码
-        if(readableMap.hasKey(JConstans.NUMBER_SIZE)){
+        // 号码
+        if (readableMap.hasKey(JConstans.NUMBER_SIZE)) {
             builder.setNumberSize(readableMap.getInt(JConstans.NUMBER_SIZE));
         }
-        if(readableMap.hasKey(JConstans.NUMBER_COLOR)){
+        if (readableMap.hasKey(JConstans.NUMBER_COLOR)) {
             builder.setNumberColor(readableMap.getInt(JConstans.NUMBER_COLOR));
         }
-        if(readableMap.hasKey(JConstans.NUMBER_X)){
+        if (readableMap.hasKey(JConstans.NUMBER_X)) {
             builder.setNumFieldOffsetX(dp2Pix(readableMap.getInt(JConstans.NUMBER_X)));
         }
-        if(readableMap.hasKey(JConstans.NUMBER_Y)){
+        if (readableMap.hasKey(JConstans.NUMBER_Y)) {
             builder.setNumFieldOffsetY(dp2Pix(readableMap.getInt(JConstans.NUMBER_Y)));
         }
-        if(readableMap.hasKey(JConstans.NUMBER_W)){
+        if (readableMap.hasKey(JConstans.NUMBER_W)) {
             builder.setNumberFieldWidth(dp2Pix(readableMap.getInt(JConstans.NUMBER_W)));
         }
-        if(readableMap.hasKey(JConstans.NUMBER_H)){
+        if (readableMap.hasKey(JConstans.NUMBER_H)) {
             builder.setNumberFieldHeight(dp2Pix(readableMap.getInt(JConstans.NUMBER_H)));
         }
-        //slogan
-        if(readableMap.hasKey(JConstans.SLOGAN_HIDDEN)){
+        // slogan
+        if (readableMap.hasKey(JConstans.SLOGAN_HIDDEN)) {
             builder.setSloganHidden(readableMap.getBoolean(JConstans.SLOGAN_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.SLOGAN_TEXT_SIZE)){
+        if (readableMap.hasKey(JConstans.SLOGAN_TEXT_SIZE)) {
             builder.setSloganTextSize(readableMap.getInt(JConstans.SLOGAN_TEXT_SIZE));
         }
-        if(readableMap.hasKey(JConstans.SLOGAN_TEXT_COLOR)){
+        if (readableMap.hasKey(JConstans.SLOGAN_TEXT_COLOR)) {
             builder.setSloganTextColor(readableMap.getInt(JConstans.SLOGAN_TEXT_COLOR));
         }
-        if(readableMap.hasKey(JConstans.SLOGAN_X)){
+        if (readableMap.hasKey(JConstans.SLOGAN_X)) {
             builder.setSloganOffsetX(dp2Pix(readableMap.getInt(JConstans.SLOGAN_X)));
         }
-        if(readableMap.hasKey(JConstans.SLOGAN_Y)){
+        if (readableMap.hasKey(JConstans.SLOGAN_Y)) {
             builder.setSloganOffsetY(dp2Pix(readableMap.getInt(JConstans.SLOGAN_Y)));
         }
-        //登录按钮
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_TEXT)){
+        // 登录按钮
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_TEXT)) {
             builder.setLogBtnText(readableMap.getString(JConstans.LOGIN_BTN_TEXT));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_TEXT_SIZE)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_TEXT_SIZE)) {
             builder.setLogBtnTextSize(readableMap.getInt(JConstans.LOGIN_BTN_TEXT_SIZE));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_TEXT_COLOR)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_TEXT_COLOR)) {
             builder.setLogBtnTextColor(readableMap.getInt(JConstans.LOGIN_BTN_TEXT_COLOR));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_IMAGE_SELECTOR)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_IMAGE_SELECTOR)) {
             // TODO:
-            JLogger.w("setLogBtnImgPath:"+readableMap.getString(JConstans.LOGIN_BTN_IMAGE_SELECTOR));
+            JLogger.w("setLogBtnImgPath:" + readableMap.getString(JConstans.LOGIN_BTN_IMAGE_SELECTOR));
             builder.setLogBtnImgPath(readableMap.getString(JConstans.LOGIN_BTN_IMAGE_SELECTOR));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_X)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_X)) {
             builder.setLogBtnOffsetX(dp2Pix(readableMap.getInt(JConstans.LOGIN_BTN_X)));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_Y)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_Y)) {
             builder.setLogBtnOffsetY(dp2Pix(readableMap.getInt(JConstans.LOGIN_BTN_Y)));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_W)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_W)) {
             builder.setLogBtnWidth(dp2Pix(readableMap.getInt(JConstans.LOGIN_BTN_W)));
         }
-        if(readableMap.hasKey(JConstans.LOGIN_BTN_H)){
+        if (readableMap.hasKey(JConstans.LOGIN_BTN_H)) {
             builder.setLogBtnHeight(dp2Pix(readableMap.getInt(JConstans.LOGIN_BTN_H)));
         }
-        //协议
-        if(readableMap.hasKey(JConstans.PRIVACY_ONE)){//过期 2.7.3+不生效
+        // 协议
+        if (readableMap.hasKey(JConstans.PRIVACY_ONE)) {// 过期 2.7.3+不生效
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_ONE);
-            builder.setAppPrivacyOne(array.getString(0),array.getString(1));
+            builder.setAppPrivacyOne(array.getString(0), array.getString(1));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_TWO)){//过期 2.7.3+不生效
+        if (readableMap.hasKey(JConstans.PRIVACY_TWO)) {// 过期 2.7.3+不生效
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_TWO);
-            builder.setAppPrivacyTwo(array.getString(0),array.getString(1));
+            builder.setAppPrivacyTwo(array.getString(0), array.getString(1));
         }
         if (readableMap.hasKey(JConstans.PRIVACY_NAME_AND_URL_BEANLIST)) {// since 273
             ReadableArray jsonArray = readableMap.getArray(JConstans.PRIVACY_NAME_AND_URL_BEANLIST);
-            if(jsonArray!=null&&jsonArray.size()!=0){
+            if (jsonArray != null && jsonArray.size() != 0) {
                 List<PrivacyBean> beanArrayList = new ArrayList<>();
 
-                for (int i=0;i<jsonArray.size();i++){
+                for (int i = 0; i < jsonArray.size(); i++) {
                     ReadableMap jsonObject1 = jsonArray.getMap(i);
                     String name = jsonObject1.getString("name");
                     String url = jsonObject1.getString("url");
                     String beforeName = jsonObject1.getString("beforeName");
                     String afterName = jsonObject1.getString("afterName");
-                    JLogger.d("setPrivacyNameAndUrlBeanList:"+beforeName+name+afterName+":"+url);
-                    beanArrayList.add(new PrivacyBean(name!=null?name:"",url!=null?url:"",beforeName!=null?beforeName:"",afterName!=null?afterName:""));
+                    JLogger.d("setPrivacyNameAndUrlBeanList:" + beforeName + name + afterName + ":" + url);
+                    beanArrayList.add(new PrivacyBean(name!=null?name:"",url!=null?url:"",beforeName!=null?beforeName:""));
+                    // beanArrayList.add(new PrivacyBean(name != null ? name : "", url != null ? url : "",
+                    //         beforeName != null ? beforeName : "", afterName != null ? afterName : ""));
                 }
                 builder.setPrivacyNameAndUrlBeanList(beanArrayList);
             }
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_COLOR)){
+        if (readableMap.hasKey(JConstans.PRIVACY_COLOR)) {
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_COLOR);
-            builder.setAppPrivacyColor(array.getInt(0),array.getInt(1));
+            builder.setAppPrivacyColor(array.getInt(0), array.getInt(1));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_TEXT)){
+        if (readableMap.hasKey(JConstans.PRIVACY_TEXT)) {
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_TEXT);
-            builder.setPrivacyText(array.getString(0),array.getString(1));
+            builder.setPrivacyText(array.getString(0), array.getString(1));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_TEXT_SIZE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_TEXT_SIZE)) {
             builder.setPrivacyTextSize(readableMap.getInt(JConstans.PRIVACY_TEXT_SIZE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_W)){
+        if (readableMap.hasKey(JConstans.PRIVACY_W)) {
             builder.setPrivacyTextWidth(dp2Pix(readableMap.getInt(JConstans.PRIVACY_W)));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_TEXT_GRAVITY_MODE)){
-            if(readableMap.getString(JConstans.PRIVACY_TEXT_GRAVITY_MODE).equals(JConstans.PRIVACY_TEXT_GRAVITY_CENTER)){
+        if (readableMap.hasKey(JConstans.PRIVACY_TEXT_GRAVITY_MODE)) {
+            if (readableMap.getString(JConstans.PRIVACY_TEXT_GRAVITY_MODE)
+                    .equals(JConstans.PRIVACY_TEXT_GRAVITY_CENTER)) {
                 builder.setPrivacyTextCenterGravity(true);
-            }else if(readableMap.getString(JConstans.PRIVACY_TEXT_GRAVITY_MODE).equals(JConstans.PRIVACY_TEXT_GRAVITY_LEFT)){
+            } else if (readableMap.getString(JConstans.PRIVACY_TEXT_GRAVITY_MODE)
+                    .equals(JConstans.PRIVACY_TEXT_GRAVITY_LEFT)) {
                 builder.setPrivacyTextCenterGravity(false);
-            }else {
+            } else {
                 builder.setPrivacyTextCenterGravity(false);
             }
         }
-        if (readableMap.hasKey(JConstans.EnableHintToast)){
-           boolean show = readableMap.getBoolean(JConstans.EnableHintToast);
+        if (readableMap.hasKey(JConstans.EnableHintToast)) {
+            boolean show = readableMap.getBoolean(JConstans.EnableHintToast);
             if (show == true) {
                 String toastText = readableMap.getString(JConstans.PRIVACY_NO_CHECK_TOAST_TEXT);
-                Toast toast = Toast.makeText(this.reactContext,toastText,0);
-                builder.enableHintToast(true,toast);
+                Toast toast = Toast.makeText(this.reactContext, toastText, 0);
+                builder.enableHintToast(true, toast);
             }
         }
 
-
-        if(readableMap.hasKey(JConstans.PRIVACY_X)){
+        if (readableMap.hasKey(JConstans.PRIVACY_X)) {
             builder.setPrivacyOffsetX(dp2Pix(readableMap.getInt(JConstans.PRIVACY_X)));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_Y)){
+        if (readableMap.hasKey(JConstans.PRIVACY_Y)) {
             builder.setPrivacyOffsetY(dp2Pix(readableMap.getInt(JConstans.PRIVACY_Y)));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_HIDDEN)){
+        if (readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_HIDDEN)) {
             builder.setPrivacyCheckboxHidden(readableMap.getBoolean(JConstans.PRIVACY_CHECKBOX_HIDDEN));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_SIZE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_SIZE)) {
             builder.setPrivacyCheckboxSize(readableMap.getInt(JConstans.PRIVACY_CHECKBOX_SIZE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_CHECK_ENABLE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_CHECK_ENABLE)) {
             builder.setPrivacyState(readableMap.getBoolean(JConstans.PRIVACY_CHECK_ENABLE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_IMAGE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_CHECKBOX_IMAGE)) {
             builder.setCheckedImgPath(readableMap.getString(JConstans.PRIVACY_CHECKBOX_IMAGE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_UNCHECKED_IMAGE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_UNCHECKED_IMAGE)) {
             builder.setUncheckedImgPath(readableMap.getString(JConstans.PRIVACY_UNCHECKED_IMAGE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_BOOK_SYMBOL_ENABLE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_BOOK_SYMBOL_ENABLE)) {
             builder.setPrivacyWithBookTitleMark(readableMap.getBoolean(JConstans.PRIVACY_BOOK_SYMBOL_ENABLE));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_COLOR)){
+        if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_COLOR)) {
             builder.setPrivacyNavColor(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_COLOR));
         }
-         if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE)){
-             builder.setPrivacyNavTitleTextSize(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE));
-         }
-        if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_COLOR)){
+        if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE)) {
+            builder.setPrivacyNavTitleTextSize(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_SIZE));
+        }
+        if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_TITLE_COLOR)) {
             builder.setPrivacyNavTitleTextColor(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_TITLE_COLOR));
         }
-        if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE)){
+        if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE)) {
             try {
                 String imageString = readableMap.getString(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE);
                 Class drawable = R.drawable.class;
-                Field field =drawable.getField(imageString);
+                Field field = drawable.getField(imageString);
                 int imageID = field.getInt(field.getName());
                 ImageView view = new ImageView(reactContext);
                 view.setImageResource(imageID);
-                if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH) && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT)){
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH), readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT));
+                if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH)
+                        && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT)) {
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_WIDTH),
+                            readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_HEIGHT));
                     params.gravity = Gravity.CENTER;
-                    if(readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X) && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y)){
-                    params.setMargins(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X),readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y),0,0);
+                    if (readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X)
+                            && readableMap.hasKey(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y)) {
+                        params.setMargins(readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_X),
+                                readableMap.getInt(JConstans.PRIVACY_WEB_NAV_RETURN_IMAGE_Y), 0, 0);
                     }  
                     view.setLayoutParams(params);
                 }
                 builder.setPrivacyNavReturnBtn(view);
-            }catch (Exception e){
-                JLogger.e("setPrivacyWebNavReturnBtnImage error:"+e.getMessage());
+            } catch (Exception e) {
+                JLogger.e("setPrivacyWebNavReturnBtnImage error:" + e.getMessage());
             }
         }
-        //  授权页动画
+        // 授权页动画
         if (readableMap.hasKey(JConstans.PRIVACY_NEED_START_ANIM)) {
             builder.setNeedStartAnim(readableMap.getBoolean(JConstans.PRIVACY_NEED_START_ANIM));
         }
         if (readableMap.hasKey(JConstans.PRIVACY_NEED_CLOSE_ANIM)) {
             builder.setNeedCloseAnim(readableMap.getBoolean(JConstans.PRIVACY_NEED_CLOSE_ANIM));
         }
-        //  授权页弹窗模式
+        // 授权页弹窗模式
         if (readableMap.hasKey(JConstans.PRIVACY_DIALOG_THEME)) {
             ReadableArray array = readableMap.getArray(JConstans.PRIVACY_DIALOG_THEME);
-            builder.setDialogTheme(array.getInt(0), array.getInt(1),array.getInt(2), array.getInt(3), array.getBoolean(4));
+            builder.setDialogTheme(array.getInt(0), array.getInt(1), array.getInt(2), array.getInt(3),
+                    array.getBoolean(4));
         }
         // 弹窗是否需要关闭
         if (readableMap.hasKey(JConstans.PRIVACY_NEED_CLOSE) && readableMap.hasKey(JConstans.PRIVACY_CLOSE_THEME)) {
             boolean needClose = readableMap.getBoolean(JConstans.PRIVACY_NEED_CLOSE);
-            if(needClose) {
-                //自定义返回按钮示例 
+            if (needClose) {
+                // 自定义返回按钮示例
                 ImageButton sampleReturnBtn = new ImageButton(reactContext);
                 sampleReturnBtn.setImageResource(R.drawable.umcsdk_return_bg);
-                RelativeLayout.LayoutParams returnLP = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams returnLP = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 // 返回按钮样式
-                ReadableArray array = readableMap.hasKey(JConstans.PRIVACY_CLOSE_THEME) ? readableMap.getArray(JConstans.PRIVACY_CLOSE_THEME) : null;
-                returnLP.setMargins(array.getInt(0), array.getInt(1),array.getInt(2), array.getInt(3));
+                ReadableArray array = readableMap.hasKey(JConstans.PRIVACY_CLOSE_THEME)
+                        ? readableMap.getArray(JConstans.PRIVACY_CLOSE_THEME)
+                        : null;
+                returnLP.setMargins(array.getInt(0), array.getInt(1), array.getInt(2), array.getInt(3));
                 sampleReturnBtn.setLayoutParams(returnLP);
-                builder.addCustomView(sampleReturnBtn,true,null);
+                builder.addCustomView(sampleReturnBtn, true, null);
             }
         }
 
     }
 
-    private ReactRootView convertToView(ReadableMap readableMap){
-        String viewName = readableMap.hasKey(JConstans.CUSTOM_VIEW_NAME) ? readableMap.getString(JConstans.CUSTOM_VIEW_NAME) : "";
-        ReadableArray viewPoint = readableMap.hasKey(JConstans.CUSTOM_VIEW_POINT) ? readableMap.getArray(JConstans.CUSTOM_VIEW_POINT) : null;
-        JLogger.w("convertToView: viewName="+viewName);
+    private ReactRootView convertToView(ReadableMap readableMap) {
+        String viewName = readableMap.hasKey(JConstans.CUSTOM_VIEW_NAME)
+                ? readableMap.getString(JConstans.CUSTOM_VIEW_NAME)
+                : "";
+        ReadableArray viewPoint = readableMap.hasKey(JConstans.CUSTOM_VIEW_POINT)
+                ? readableMap.getArray(JConstans.CUSTOM_VIEW_POINT)
+                : null;
+        JLogger.w("convertToView: viewName=" + viewName);
         if (TextUtils.isEmpty(viewName)) {
             JLogger.e("viewName is null");
             return null;
         }
         ReactRootView reactView = new ReactRootView(reactContext);
-        Activity currentActivity =  getCurrentActivity();
-        if (currentActivity == null){
+        Activity currentActivity = getCurrentActivity();
+        if (currentActivity == null) {
             JLogger.e("currentActivity is null");
-            return  null;
+            return null;
         }
-        ReactApplication application = (ReactApplication)currentActivity.getApplication();
-        if (application == null){
+        ReactApplication application = (ReactApplication) currentActivity.getApplication();
+        if (application == null) {
             JLogger.e("application is null");
-            return  null;
+            return null;
         }
         reactView.startReactApplication(application.getReactNativeHost().getReactInstanceManager(), viewName);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         if (viewPoint != null) {
             int x = dp2Pix(viewPoint.getInt(0));
             int y = dp2Pix(viewPoint.getInt(1));
